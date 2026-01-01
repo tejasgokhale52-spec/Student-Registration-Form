@@ -1,0 +1,154 @@
+<!doctype html>
+<html >
+  <head>
+    <title>Student Registration Form</title>
+    
+  </head>
+  <body>
+    <h1> JSPM RSCOE</h1>
+    <link rel="stylesheet" href="style.css" />
+    <main class="container">
+      <h2>Student Registration</h2>
+      <p class="lead">Fill out the form to register the student</p>
+
+      <form id="regForm" novalidate>
+        <div>
+          <label for="firstName">First Name </label>
+          <input id="firstName" name="firstName" type="text" required />
+        </div>
+
+        <div>
+          <label for="lastName">Last Name </label>
+          <input id="lastName" name="lastName" type="text" required />
+        </div>
+
+        <div>
+          <label for="studentId">Student ID </label>
+          <input id="studentId" name="studentId" type="text" required />
+        </div>
+
+        <div>
+          <label for="dob">Date of Birth </label>
+          <input id="dob" name="dob" type="date" required />
+        </div>
+
+        <div>
+          <label for="email">Email </label>
+          <input id="email" name="email" type="email" required />
+        </div>
+
+        <div>
+          <label for="phone">Phone</label>
+          <input id="phone" name="phone" type="tel" />
+        </div>
+
+        <div class="full">
+          <label for="address">Address</label>
+          <textarea id="address" name="address" rows="2"></textarea>
+        </div>
+
+        <div>
+          <label for="course">Course / Program </label>
+          <select id="course" name="course" required>
+            <option value="">Select a course</option>
+            <option>Computer Engineering</option>
+            <option>Mechanical Engineering</option>
+            <option>Civil Engineering</option>
+            <option>Electrical Engineering</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="year">Year </label>
+          <select id="year" name="year" required>
+            <option value="">Select year</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+          </select>
+        </div>
+
+        <div>
+          <label>Gender</label>
+          <div class="row">
+            <label><input type="radio" name="gender" value="Male"> Male</label>
+            <label><input type="radio" name="gender" value="Female"> Female</label>
+            <label><input type="radio" name="gender" value="Other"> Other</label>
+          </div>
+        </div>
+
+        <div>
+          <label for="password">Password </label>
+          <input id="password" name="password" type="password" required minlength="6" />
+        </div>
+
+        <div>
+          <label for="confirmPassword">Confirm Password </label>
+          <input id="confirmPassword" name="confirmPassword" type="password" required minlength="6" />
+        </div>
+
+        <div class="full">
+          <label for="photo">Profile Photo</label>
+          <div style="display:flex;align-items:center;gap:12px">
+            <input id="photo" name="photo" type="file" accept="image/*" />
+            <img id="preview" class="photo-preview" alt="Preview" />
+            <span class="muted">Max 2MB</span>
+          </div>
+        </div>
+
+        <div class="full">
+          <label><input type="checkbox" id="terms" required> I confirm the information provided is correct *</label>
+        </div>
+
+        <div class="full foot">
+          <div id="err" class="error" aria-live="polite"></div>
+          <div style="margin-left:auto">
+            <button type="reset" class="btn" style="background:#ef4444;margin-right:8px">Reset</button>
+            <button type="submit" id="submitBtn" class="btn">Register</button>
+          </div>
+        </div>
+      </form>
+
+      <script>
+        const form = document.getElementById('regForm');
+        const err = document.getElementById('err');
+        const preview = document.getElementById('preview');
+        const photoInput = document.getElementById('photo');
+
+        photoInput.addEventListener('change', ()=>{
+          const file = photoInput.files[0];
+          if(!file){ preview.src = ''; return }
+          if(file.size > 2*1024*1024){ err.textContent = 'Photo must be under 2MB.'; photoInput.value = ''; preview.src = ''; return }
+          err.textContent = '';
+          const url = URL.createObjectURL(file);
+          preview.src = url;
+        });
+
+        form.addEventListener('submit', (e)=>{
+        
+          
+          const p = document.getElementById('password').value;
+          const cp = document.getElementById('confirmPassword').value;
+          if(p !== cp)
+          { err.textContent = 'Passwords do not match.'; return 
+
+          }
+          if(!form.checkValidity())
+          { err.textContent = 'Please complete the required fields.'; 
+          return 
+
+          }
+
+          const data = new FormData(form);
+          const obj = {};
+          data.forEach((v,k)=>{ obj[k]=v });
+
+          console.log('Registered student:', obj);
+          alert('Student registered successfully (check console for data).');
+          form.reset(); preview.src = '';
+        });
+      </script>
+    </main>
+  </body>
+</html>
